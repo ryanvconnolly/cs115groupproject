@@ -8,42 +8,43 @@ PREF_FILE = 'musicrex-store.txt'
 
 def loadUsers(fileName): #ryan
     '''read in file of stored users' preferences from the file. returns dictionary
-    of user names and their preferences.'''
+    of user names and their preferences. Ryan completed this.'''
 
     pass
 
 def getPrefs(userName, userDict): #ryan
     '''returns list of user's preferred artists. If system already knows ab
     user, gets info from the dict and asks user if they'd like to provide
-    additional preferences. if user is new, asks for their preferences.'''
+    additional preferences. if user is new, asks for their preferences. Ryan
+    completed this.'''
     pass
 
 def getRecs(currUser, prefs, userDict): #karlo
     '''gets recommendations for current user based on users in the
     user dictionary and their preferences. returns list of recommended
-    artists.'''
+    artists. Karlo complered this.'''
     pass
 
 def findBestUser(currUser, prefs, userDict): #karlo
     '''finds user whose preferences are the most similar to current user.
-    returns best user's name'''
+    returns best user's name. Karlo completed this.'''
     pass
 
 def drop(L1, L2): #madelyn
     '''returns new list that contains only the elements in list 2 that are not
-    in list 1.'''
+    in list 1. Maddy completed this'''
     pass
 
 def numMatches(L1, L2): #madelyn
-    '''returns number of elements that match in the 2 lists.'''
+    '''returns number of elements that match in the 2 lists. Maddy completed this'''
     pass
 
 def saveUserPrefs(userName, prefs, userDict, fileName): #madelyn
-    '''writes all of user prefs to the file. no return.'''
+    '''writes all of user prefs to the file. Maddy completed this'''
     pass
 
 def main(): #ryan
-    '''main recommendation function'''
+    '''main recommendation function'. Ryan completed this.'''
 
     userDict = loadUsers(PREF_FILE)
     print("Welcome to your music recommendation system!")
