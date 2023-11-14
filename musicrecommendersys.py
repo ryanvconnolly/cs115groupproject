@@ -6,54 +6,18 @@ CS 115 Group Project Part 2
 
 PREF_FILE = 'musicrex-store.txt'
 
-def loadUsers(fileName): 
+def loadUsers(fileName): #ryan
     '''read in file of stored users' preferences from the file. returns dictionary
     of user names and their preferences. Ryan completed this.'''
 
-    file = open(fileName, 'r')
-    userDict = {}
-    for line in file:
-        #read and parse line 1
-        [userName, artists] = line.strip().split(':')
-        artistList = artists.split(",")
-        artistList.sort()
-        userDict[userName] = artistList
-    
-    file.close()
-    return userDict
+    pass
 
-def getPrefs(userName, userMap): 
+def getPrefs(userName, userDict): #ryan
     '''returns list of user's preferred artists. If system already knows ab
     user, gets info from the dict and asks user if they'd like to provide
     additional preferences. if user is new, asks for their preferences. Ryan
     completed this.'''
-
-    #if user info is already in dictionary
-    newPref = ''
-    if userName in userMap:
-        prefs = userMap[userName]
-        print("OMG! You've used this system before!")
-        print("Your preferences are: ")
-        for artist in prefs:
-            print(artist)
-        
-        print("Please enter another artist you love, \ or just press enter: ")
-        newPref = input("to see your recommendations: ")
-    
-    else:
-        prefs = []
-        print("Welcome newbie!")
-        newPref = input("Please enter the name of an artist you love: ")
-
-        while newPref != "":
-            prefs.append(newPref.strip().title())
-            print("Please enter another another artist you love, \ or just press Enter to see your recommendations.")
-            newPref = input("to see your recommendations: ")
-
-    #keep lists in sorted order to compare easily.
-    prefs.sort()
-    return prefs
-              
+    pass
 
 def getRecs(currUser, prefs, userDict): #karlo
     '''gets recommendations for current user based on users in the
