@@ -22,43 +22,13 @@ def getPrefs(userName, userDict): #ryan
 def getRecs(currUser, prefs, userDict): #karlo
     '''gets recommendations for current user based on users in the
     user dictionary and their preferences. returns list of recommended
-    artists. Karlo completed this.'''
-    bestUser = findBestUser(currUser, prefs, userDict)
-    
-    if bestUser is not None and userDict[bestUser]['private_mode']:
-        print("No recommendations available at this time.")
-        return []
-    
-    recommendations = drop(prefs, userDict[bestUser])
-    
-    recommendations = list(set(recommendations) - set(prefs[currUser]))
-    
-    recommendations.sort()
-    
-    if recommendations:
-        for artist in recommendations:
-            print(artist)
-    else:
-        print("No recommendations available at this time.")
+    artists. Karlo complered this.'''
+    pass
 
 def findBestUser(currUser, prefs, userDict): #karlo
     '''finds user whose preferences are the most similar to current user.
     returns best user's name. Karlo completed this.'''
-    users = userDict.keys()
-    bestUser = None
-    bestScore = -1
-    
-    for user in users:
-        if userDict[user]['private_mode']:
-            continue
-        if set(prefs[userDict[user]]) <= set(prefs[currUser]):
-            continue  
-        score = numMatches(prefs, userDict[user])
-        if score > bestScore and currUser != user:
-            bestScore = score
-            bestUser = user
-    
-    return bestUser
+    pass
 
 def drop(L1, L2): #madelyn
     '''returns new list that contains only the elements in list 2 that are not
