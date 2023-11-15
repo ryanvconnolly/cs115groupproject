@@ -23,12 +23,7 @@ def loadUsers(fileName):
     return userDict
 
 def getPrefs(userName, userMap): 
-    '''returns list of user's preferred artists. If system already knows ab
-    user, gets info from the dict and asks user if they'd like to provide
-    additional preferences. if user is new, asks for their preferences. Ryan
-    completed this.'''
 
-    #if user info is already in dictionary
     newPref = ''
     if userName in userMap:
         prefs = userMap[userName]
@@ -37,7 +32,7 @@ def getPrefs(userName, userMap):
         for artist in prefs:
             print(artist)
         
-        print("Please enter another artist you love, \ or just press enter: ")
+        print("Please enter another artist you love, or just press Enter: ")
         newPref = input("to see your recommendations: ")
     
     else:
@@ -47,10 +42,9 @@ def getPrefs(userName, userMap):
 
         while newPref != "":
             prefs.append(newPref.strip().title())
-            print("Please enter another another artist you love, \ or just press Enter to see your recommendations.")
+            print("Please enter another artist you love, or just press Enter to see your recommendations.")
             newPref = input("to see your recommendations: ")
 
-    #keep lists in sorted order to compare easily.
     prefs.sort()
     return prefs
               
@@ -67,7 +61,7 @@ def getRecs(currUser, prefs, userDict): #karlo
 
     recommendations = drop(prefs, userDict[bestUser])
 
-    recommendations = list(set(recommendations) - set(prefs[currUser]))
+    recommendations = list(set(recommendations) - set(prefs))
 
     recommendations.sort()
 
@@ -87,7 +81,7 @@ def findBestUser(currUser, prefs, userDict):
     for user in users:
         if userDict[user]['private_mode']:
             continue
-        if set(prefs[userDict[user]]) <= set(prefs[currUser]):
+        if set(userDict[user]) <= set(prefs):
             continue  
         score = numMatches(prefs, userDict[user])
         if score > bestScore and currUser != user:
@@ -110,7 +104,7 @@ def drop(L1, L2): #madelyn
         elif L1[i] < L2[j]:
             i += 1
         else:
-            L += L2[j]
+            L.append(L2[j])
             j += 1
     return L
 
@@ -126,40 +120,133 @@ def numMatches(L1, L2): #madelyn
 def saveUserPrefs(userName, prefs, userDict, fileName): #madelyn
     '''writes all of user prefs to the file. Maddy completed this'''
     userDict[userName] = prefs
-    file = open(fileName, 'w')
-    for user in userDict:
-        save = str(user) + ": " + ','.join(userMap[user]) + '\n'
-        file.write(save)
-    file.close()
+    with open(fileName, 'w') as file:
+        for user in userDict:
+            save = str(user) + ": " + ','.join(userDict[user]) + '\n'
+            file.write(save)
+
+
+def showMostPopularArtists(userDict): #Karlo
+    artist_likes = {}
+
+    for user, preferences in userDict.items():
+        if not preferences or (len(preferences) == 1 and preferences[0] == 'private_mode'):
+            continue
+
+        for artist in preferences:
+            artist_likes[artist] = artist_likes.get(artist, 0) + 1
+
+    sorted_artists = sorted(artist_likes.items(), key=lambda x: x[1], reverse=True)
+
+    if sorted_artists:
+        print("Top 3 Most Popular Artists:")
+        for i in range(min(3, len(sorted_artists))):
+            print(sorted_artists[i][0])
+    else:
+        print("Sorry, no artists found.")
+
+def howPopularIsMostPopularArtist(userDict): #Karlo
+    '''Print the number of likes the most popular artist received.'''
+    artist_likes = {}
+
+    for preferences in userDict.values():
+        if not preferences or (len(preferences) == 1 and preferences[0] == 'private_mode'):
+            continue
+
+        for artist in preferences:
+            artist_likes[artist] = artist_likes.get(artist, 0) + 1
+
+    sorted_artists = sorted(artist_likes.items(), key=lambda x: x[1], reverse=True)
+
+    if sorted_artists:
+        print(f"Number of likes for the most popular artist: {sorted_artists[0][1]}")
+    else:
+        print("Sorry, no artists found.")
+def whichUserLikesTheMostArtists(userDict, currUser): #Karlo
+    '''Print the full name(s) of the user(s) who like(s) the most artists.'''
+    user_likes = {}
+
+    for user, preferences in userDict.items():
+        if not userDict[user]['private_mode']:
+            user_likes[user] = len(preferences)
+
+    sorted_users = sorted(user_likes.items(), key=lambda x: x[1], reverse=True)
+
+    if sorted_users:
+        print("User(s) who like(s) the most artists:")
+        for user, _ in sorted_users:
+            print(user)
+    else:
+        print("Sorry, no user found.")
+
+def saveAndQuit(userDict, fileName): #Karlo
+    '''Save the current database to the file and exit the program.'''
+    with open(fileName, 'w') as file:
+        for user, preferences in userDict.items():
+            save_line = f"{user}: {','.join(preferences)}\n"
+            file.write(save_line)
     
+    print("Database saved. Exiting program.")
+    exit()
+
+def loadUsers(fileName): #Karlo, Maddie, Ryan
+    try:
+        file = open(fileName, 'r')
+        userDict = {}
+        for line in file:
+            # read and parse line 1
+            [userName, artists] = line.strip().split(':')
+            artistList = artists.split(",")
+            artistList.sort()
+            userDict[userName] = artistList
+        file.close()
+        return userDict
+    except FileNotFoundError:
+        print(f"Error: File '{fileName}' not found. Creating an empty user dictionary.")
+        return {}
+
 def main(): #ryan
     '''main recommendation function'. Ryan completed this.'''
-
+    '''main recommendation function'. Ryan completed this.'''
     userDict = loadUsers(PREF_FILE)
     print("Welcome to your music recommendation system!")
 
-    userName = input("Please enter your name: ")
+    userName_input = input("Please enter your name (put a $ symbol after your name if you wish your preferences to remain private): ")
+    private_mode = userName_input.endswith('$')
+    userName = userName_input.rstrip('$')
+
     print("Welcome, ", userName)
 
-    prefs = getPrefs(userName, userDict)
-    recs = getRecs(userName, prefs, userDict)
+    while True:
+        print("\nEnter a letter to choose an option:")
+        print("e - Enter preferences")
+        print("r - Get recommendations")
+        print("p - Show most popular artists")
+        print("h - How popular is the most popular")
+        print("m - Which user has the most likes")
+        print("q - Save and quit")
 
-    #Print user recommendations
-    if len(recs) == 0:
-        print("I'm sorry. I have no recommendations for your right now. Please try again later :(")
-    else:
-        print(userName+',', "Based on your preferences, I believe you might like: ")
-        for artist in recs:
-            print(artist)
+        choice = input("Enter your choice: ")
 
-    print("I hope you are happy with your recommendations. I will save your preferences and recommendations for later! \
-            Have a great day!")
+        if choice == 'e':
+            prefs = getPrefs(userName, userDict)
+            saveUserPrefs(userName, prefs, userDict, PREF_FILE)
+        elif choice == 'r':
+            prefs = userDict.get(userName, [])
+            recs = getRecs(userName, prefs, userDict)
+        elif choice == 'p':
+            showMostPopularArtists(userDict)
+        elif choice == 'h':
+            howPopularIsMostPopularArtist(userDict)
+        elif choice == 'm':
+            whichUserLikesTheMostArtists(userDict, userName)
+        elif choice == 'q':
+            saveAndQuit(userDict, PREF_FILE)
+        else:
+            print("Invalid choice. Please enter a valid option.")
 
-    saveUserPreferences(userName, prefs, userMap, PREF_FILE)
-
-    if__name__ == '__main__' : main()
-
-
+if __name__ == '__main__':
+    main()
 
     
 
