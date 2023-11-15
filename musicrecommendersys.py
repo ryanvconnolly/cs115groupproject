@@ -143,7 +143,7 @@ def userLikesMost(userDict):
         print("Sorry, no user found")
 
     for u in users:
-        if userDict[u]['private_mode']:
+        if u[-1] == '$':
             continue
         if len(userDict[u]) == 0:
             continue
