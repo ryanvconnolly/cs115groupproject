@@ -128,7 +128,7 @@ def saveUserPrefs(userName, prefs, userDict, fileName): #madelyn
     userDict[userName] = prefs
     file = open(fileName, 'w')
     for user in userDict:
-        save = str(user) + ": " + ','.join(userMap[user]) + '\n'
+        save = str(user) + ": " + ','.join(userDict[user]) + '\n'
         file.write(save)
     file.close()
     
