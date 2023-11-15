@@ -117,17 +117,9 @@ def drop(L1, L2): #madelyn
 def numMatches(L1, L2): #madelyn
     '''returns number of elements that match in the 2 lists. Maddy completed this'''
     count = 0
-    i = 0
-    j = 0
-    while i < len(L1) and j < len(L2):
-        if L1[i] == L2[j]:
-            count = 1
-            i += 1
-            j += 1
-        elif L1[i] < L2[j]:
-            i += 1
-        else:
-            j += 1
+    for i in L1:
+        if i in L2:
+            count += 1
     return count
     
 
