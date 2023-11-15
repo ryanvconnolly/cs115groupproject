@@ -131,6 +131,27 @@ def saveUserPrefs(userName, prefs, userDict, fileName): #madelyn
         save = str(user) + ": " + ','.join(userDict[user]) + '\n'
         file.write(save)
     file.close()
+
+def userLikesMost(userDict):
+    '''prints out the user who likes the most artists'''
+
+    users = userDict.keys()
+    longest = 0
+    mark = ""
+    
+    if userDict == {}:
+        print("Sorry, no user found")
+
+    for u in users:
+        if userDict[u]['private_mode']:
+            continue
+        if len(userDict[u]) == 0:
+            continue
+        elif len(userDict[u]) > longest:
+            mark = u
+            longest = len(userDict[u])
+
+    return mark
     
 def main(): #ryan
     '''main recommendation function'. Ryan completed this.'''
