@@ -126,7 +126,7 @@ def numMatches(L1, L2): #madelyn
 def saveUserPrefs(userName, prefs, userDict, fileName): #madelyn
     '''writes all of user prefs to the file. Maddy completed this'''
     userDict[userName] = prefs
-    file = open(fileName, 'w')
+    file = open(fileName, PREF_FILE)
     for user in userDict:
         save = str(user) + ": " + ','.join(userDict[user]) + '\n'
         file.write(save)
