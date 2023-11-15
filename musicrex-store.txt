@@ -1,7 +1,7 @@
-Karlo Medina:         Bad Bunny,Reid,Tame Impala
-Karlo2:        Bad Bunny,Lady Gaga,Tame Impala
-karlo3:      Bad Bunny,Romeo Santos
-karlo4:     Bad Bunny
-karlo5:    Bad Bunny
-karlo6:   Bad Bunny
-karlo10:  /Usr/Local/Bin/Python3 /Users/Karlomedina/Documents/Github/Cs115Groupproject/Musicrecommendersys.Py,/Usr/Local/Bin/Python3 /Users/Karlomedina/Documents/Github/Cs115Groupproject/Musicrecommendersys.Py,/Usr/Local/Bin/Python3 /Users/Karlomedina/Documents/Github/Cs115Groupproject/Musicrecommendersys.Py,/Usr/Local/Bin/Python3 /Users/Karlomedina/Documents/Github/Cs115Groupproject/Musicrecommendersys.Py,/Usr/Local/Bin/Python3 /Users/Karlomedina/Documents/Github/Cs115Groupproject/Musicrecommendersys.Py,/Usr/Local/Bin/Python3 /Users/Karlomedina/Documents/Github/Cs115Groupproject/Musicrecommendersys.Py,/Usr/Local/Bin/Python3 /Users/Karlomedina/Documents/Github/Cs115Groupproject/Musicrecommendersys.Py,A
+Karlo Medina:                      Bad Bunny,Reid,Tame Impala
+Karlo2:                     Bad Bunny,Lady Gaga,Tame Impala
+karlo3:                   Bad Bunny,Romeo Santos
+karlo4:                  Bad Bunny
+karlo5:                 Bad Bunny
+karlo6:                Bad Bunny
+karlo Medina1:          1,2,3,4,5,6
