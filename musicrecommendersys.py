@@ -99,16 +99,47 @@ def findBestUser(currUser, prefs, userDict):
 def drop(L1, L2): #madelyn
     '''returns new list that contains only the elements in list 2 that are not
     in list 1. Maddy completed this'''
-    pass
+    L = []
+    i = 0
+    j = 0
+    while i < len(L1) and j < len(L2):
+        if L1[i] == L2[j]:
+            print("Skip", L1[i])
+            i += 1
+            j += 1
+        elif L1[i] < L2[j]:
+            i += 1
+        else:
+            L += L2[j]
+            j += 1
+    return L
 
 def numMatches(L1, L2): #madelyn
     '''returns number of elements that match in the 2 lists. Maddy completed this'''
-    pass
+    count = 0
+    i = 0
+    j = 0
+    while i < len(L1) and j < len(L2):
+        if L1[i] == L2[j]:
+            count = 1
+            i += 1
+            j += 1
+        elif L1[i] < L2[j]:
+            i += 1
+        else:
+            j += 1
+    return count
+    
 
 def saveUserPrefs(userName, prefs, userDict, fileName): #madelyn
     '''writes all of user prefs to the file. Maddy completed this'''
-    pass
-
+    userDict[userName] = prefs
+    file = open(fileName, 'w')
+    for user in userDict:
+        save = str(user) + ": " + ','.join(userMap[user]) + '\n'
+        file.write(save)
+    file.close()
+    
 def main(): #ryan
     '''main recommendation function'. Ryan completed this.'''
 
