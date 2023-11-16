@@ -109,6 +109,7 @@ def numMatches(L1, L2): #madelyn
 def saveUserPrefs(userName, prefs, userDict, fileName): #madelyn
     '''writes all of user prefs to the file. Maddy completed this'''
     userDict[userName] = prefs
+<<<<<<< HEAD
     with open(fileName, 'w') as file:
         for user in userDict:
             save = str(user) + ": " + ','.join(userDict[user]) + '\n'
@@ -199,6 +200,34 @@ def loadUsers(fileName): #Ryan
     except FileNotFoundError:
         print(f"Error: File '{fileName}' not found. Creating an empty user dictionary.")
         return {}
+=======
+    file = open(fileName, PREF_FILE)
+    for user in userDict:
+        save = str(user) + ": " + ','.join(userDict[user]) + '\n'
+        file.write(save)
+    file.close()
+
+def userLikesMost(userDict):
+    '''prints out the user who likes the most artists'''
+
+    users = userDict.keys()
+    longest = 0
+    mark = ""
+    
+    if userDict == {}:
+        print("Sorry, no user found")
+
+    for u in users:
+        if u[-1] == '$':
+            continue
+        if len(userDict[u]) == 0:
+            continue
+        elif len(userDict[u]) > longest:
+            mark = u
+            longest = len(userDict[u])
+
+    return mark
+>>>>>>> 06d8cc44702767a8e4c6ac4431ac8cfac96a3905
     
 def main(): #ryan
     '''main recommendation function'. Ryan completed this.'''
