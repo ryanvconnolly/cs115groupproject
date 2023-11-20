@@ -1,0 +1,224 @@
+'''
+Names: Ryan Connolly, Karlo Medina, Madelyn Pagkalinawan
+I pledge my honor that I have abided by the Stevens Honor System
+CS 115 Group Project Part 2
+'''
+import os
+PREF_FILE = 'musicrecplus.txt' 
+
+def loadUsers(fileName): 
+    '''Read in the file of stored users' preferences. Returns a dictionary
+    of user names and their preferences.'''
+    userDict = {}
+    if os.path.exists(fileName):
+        with open(fileName, 'r') as file:
+            for line in file:
+                parts = line.strip().split(':')
+                if len(parts) == 2:
+                    userName, artists = parts
+                    artistList = artists.split(',')
+                    userDict[userName] = artistList
+
+    return userDict
+
+
+def saveUserPrefs(userName, prefs, userDict, fileName): 
+    '''Saves the current database to the file, replacing any old contents and quits.'''
+    userDict[userName] = prefs
+    with open(fileName, 'w') as file:
+        for user, artists in userDict.items():
+            save = f"{user}:{','.join(artists)}\n"
+            file.write(save)
+    
+
+def getPrefs(userName, userDict): 
+    '''Returns a list of the user's preferred artists. Replaces the preferences previously saved in the 
+     database under the user.'''
+    preference = []
+    while True:
+        getpref = input('Enter an artist that you like (Enter to Finish): \n')
+        if getpref == '':
+            preference.sort()
+            userDict[userName] = preference
+            return preference
+        else:
+            preference.append(getpref)
+
+
+
+def findBestUser(currUser, prefs, userDict): 
+    '''finds user whose preferences are the most similar to current user.
+    returns best user's name. Karlo completed this.'''
+    
+    users = [user for user in userDict if '$' not in user != currUser]
+    bestUser = None
+    bestScore = -1
+
+    for user in users:
+        if set(prefs) <= set(userDict[user]):
+            continue  
+        score = numMatches(prefs, userDict[user])
+        
+        if score > bestScore and currUser != user:
+            bestScore = score
+            bestUser = user
+
+    return bestUser
+
+def numMatches(L1, L2):
+    '''returns number of elements that match in the 2 lists. Maddy completed this'''
+    count = 0
+    for i in L1:
+        if i in L2:
+            count += 1
+    return count
+
+def drop(L1, L2): 
+    '''returns new list that contains only the elements in list 2 that are not
+    in list 1. Maddy completed this'''
+    L = []
+    i = 0
+    j = 0
+    while i < len(L1) and j < len(L2):
+        if L1[i] == L2[j]:
+            i += 1
+            j += 1
+        elif L1[i] < L2[j]:
+            i += 1
+        else:
+            L.append(L2[j])
+            j += 1
+    while j < len(L2):
+        L.append(L2[j])
+        j += 1
+    return L
+              
+
+def getRecs(userName, prefs, userDict): 
+    '''gets recommendations for current user based on users in the
+    user dictionary and their preferences. returns list of recommended
+    artists. Karlo completed this.'''
+    
+    bestUser = findBestUser(userName, prefs, userDict)
+
+    if bestUser == None or userDict[bestUser][-1] == '$':
+        print("No recommendations available at this time.")
+        return
+
+    recommendations = drop(prefs, userDict[bestUser])
+
+    recommendations = list(set(recommendations) - set(prefs))
+
+    recommendations.sort()
+
+    if recommendations:
+        print(", ".join(recommendations))
+    else:
+        print("No recommendations available at this time.")
+        
+
+def mostPop(userDict):
+    '''Returns the top 3 artists that are liked by the most users. Users in private mode are
+        excluded.'''
+    if userDict == {}:
+        print("Sorry, no artists found.")
+    else:
+        numL = {}
+        r = [key for key in userDict if '$' not in key]
+
+        for key in r:
+            for artist in userDict[key]:
+                if artist not in numL:
+                    numL[artist] = 1
+                else:
+                    numL[artist] += 1
+
+        topArtists = sorted(numL, key=lambda key: numL[key], reverse=True)
+
+        for artist in topArtists[:3]:
+            print(artist)
+            
+def howPop(userDict):
+    '''returns the number of likes that the most popular artist received. Users in private mode are excluded.
+        Maddy completed this function.'''
+    if userDict == {}:
+        print("Sorry, no artists found.")
+    
+    else:
+        likesCount = {}
+        r = [key for key in userDict if '$' not in key]
+        
+        for key in r:
+            artistL = str(userDict[key]).split(',')
+
+            for artist in artistL:
+                if artist not in likesCount:
+                    likesCount[artist] = 1
+                    
+                else:
+                    likesCount[artist] += 1
+                    
+        mostL = max(likesCount.values())
+
+        print(mostL)
+        
+
+def mostLikes(userDict):
+    '''Returns the full names of the users who like the most artists.'''
+    if userDict == {}:
+        print("Sorry, no user found.")
+    else:
+        out = [0, '']
+        r = [key for key in userDict if '$' not in key]
+
+        for key in r:
+            artistL = userDict[key]
+            if len(artistL) > out[0]:
+                out = len(artistL), key
+        print(out[1])
+        
+
+def main(): 
+    '''main recommendation function'. Ryan completed this.'''
+
+    userDict = loadUsers(PREF_FILE)
+
+    userName = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private): ")
+
+    if userName not in userDict:
+        prefs = getPrefs(userName, userDict)
+        userDict[userName] = prefs
+        saveUserPrefs(userName, prefs, userDict, PREF_FILE)
+    else:
+        prefs = userDict[userName]
+
+    while True:
+        print("Enter a letter to choose an option:")
+        print("e - Enter preferences")
+        print("r - Get recommendations")
+        print("p - Show most popular artists")
+        print("h - How popular is the most popular")
+        print("m - Which user has the most likes")
+        print("q - Save and quit")
+
+        mchoice = input("Choice: ").strip()
+
+        if mchoice == 'e':
+            prefs = getPrefs(userName, userDict)
+            saveUserPrefs(userName, prefs, userDict, PREF_FILE)
+        elif mchoice == 'r':
+            recs = getRecs(userName, prefs, userDict)
+        elif mchoice == 'p':
+            mostPop(userDict)
+        elif mchoice == 'h':
+            howPop(userDict)
+        elif mchoice == 'm':
+            mostLikes(userDict)
+        elif mchoice == 'q':
+            saveUserPrefs(userName, prefs, userDict, PREF_FILE)
+            break
+        else:
+            print("Invalid choice. Please try again.")
+            
+    if __name__ == '__main__' :
+        main()
