@@ -156,7 +156,7 @@ def howPop(userDict):
         likesCount = {}
         r = [key for key in userDict if '$' in key]
         
-        if key not in r:
+        if key in r:
             artistL = userDict[key].split(',')
 
             for artist in artistL:
