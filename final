@@ -43,6 +43,7 @@ def getPrefs(userName, userDict):
     while True:
             getpref = input('Enter an artist that you like (Enter to Finish): \n')
             if getpref == '':
+                preference.sort()
                 userDict[userName] = preference
                 return preference
             else:
