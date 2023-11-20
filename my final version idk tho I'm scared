@@ -6,7 +6,7 @@ CS 115 Group Project Part 2
 import os
 PREF_FILE = 'musicrecplus.txt' 
 
-def loadUsers(fileName): 
+def loadUsers(fileName): #Ryan
     '''Read in the file of stored users' preferences. Returns a dictionary
     of user names and their preferences.'''
     userDict = {}
@@ -22,7 +22,7 @@ def loadUsers(fileName):
     return userDict
 
 
-def saveUserPrefs(userName, prefs, userDict, fileName): 
+def saveUserPrefs(userName, prefs, userDict, fileName): #Madelyn
     '''Saves the current database to the file, replacing any old contents and quits.'''
     userDict[userName] = prefs
     with open(fileName, 'w') as file:
@@ -31,7 +31,7 @@ def saveUserPrefs(userName, prefs, userDict, fileName):
             file.write(save)
     
 
-def getPrefs(userName, userDict): 
+def getPrefs(userName, userDict): #Ryan
     '''Returns a list of the user's preferred artists. Replaces the preferences previously saved in the 
      database under the user.'''
     preference = []
@@ -46,7 +46,7 @@ def getPrefs(userName, userDict):
 
 
 
-def findBestUser(currUser, prefs, userDict): 
+def findBestUser(currUser, prefs, userDict): #Karlo
     '''finds user whose preferences are the most similar to current user.
     returns best user's name. Karlo completed this.'''
     
@@ -65,7 +65,7 @@ def findBestUser(currUser, prefs, userDict):
 
     return bestUser
 
-def numMatches(L1, L2):
+def numMatches(L1, L2): #Madelyn
     '''returns number of elements that match in the 2 lists. Maddy completed this'''
     count = 0
     for i in L1:
@@ -73,7 +73,7 @@ def numMatches(L1, L2):
             count += 1
     return count
 
-def drop(L1, L2): 
+def drop(L1, L2): #Madelyn
     '''returns new list that contains only the elements in list 2 that are not
     in list 1. Maddy completed this'''
     L = []
@@ -94,7 +94,7 @@ def drop(L1, L2):
     return L
               
 
-def getRecs(userName, prefs, userDict): 
+def getRecs(userName, prefs, userDict): #Karlo
     '''gets recommendations for current user based on users in the
     user dictionary and their preferences. returns list of recommended
     artists. Karlo completed this.'''
@@ -117,7 +117,7 @@ def getRecs(userName, prefs, userDict):
         print("No recommendations available at this time.")
         
 
-def mostPop(userDict):
+def mostPop(userDict): #Karlo, Madelyn, Ryan
     '''Returns the top 3 artists that are liked by the most users. Users in private mode are
         excluded.'''
     if userDict == {}:
@@ -138,7 +138,7 @@ def mostPop(userDict):
         for artist in topArtists[:3]:
             print(artist)
             
-def howPop(userDict):
+def howPop(userDict): #Karlo, Madelyn, Ryan
     '''returns the number of likes that the most popular artist received. Users in private mode are excluded.
         Maddy completed this function.'''
     if userDict == {}:
