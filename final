@@ -6,7 +6,8 @@ CS 115 Group Project Part 2
 import os
 PREF_FILE = 'musicrecplus.txt' 
 
-
+def menuInput():
+    '''takes user
 def loadUsers(fileName): 
     '''read in file of stored users' preferences from the file. returns dictionary
     of user's names and their preferences. Ryan completed this.'''
@@ -68,6 +69,32 @@ def findBestUser(currUser, prefs, userDict):
             bestUser = user
 
     return bestUser
+
+def numMatches(L1, L2):
+    '''returns number of elements that match in the 2 lists. Maddy completed this'''
+    count = 0
+    for i in L1:
+        if i in L2:
+            count += 1
+    return count
+
+def drop(L1, L2): 
+    '''returns new list that contains only the elements in list 2 that are not
+    in list 1. Maddy completed this'''
+    L = []
+    i = 0
+    j = 0
+    while i < len(L1) and j < len(L2):
+        if L1[i] == L2[j]:
+            print("Skip", L1[i])
+            i += 1
+            j += 1
+        elif L1[i] < L2[j]:
+            i += 1
+        else:
+            L.append(L2[j])
+            j += 1
+    return L
               
 
 def getRecs(userName, prefs, userDict): 
