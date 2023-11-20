@@ -216,6 +216,8 @@ def main():
             mostPop(userDict)
         elif mchoice == 'h':
             howPop(userDict)
+        elif mchoice == 'm':
+            mostLikes(userDict)
         elif mchoice == 'q':
             saveUserPrefs(userName, prefs, userDict, PREF_FILE)
             break
