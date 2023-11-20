@@ -6,8 +6,6 @@ CS 115 Group Project Part 2
 import os
 PREF_FILE = 'musicrecplus.txt' 
 
-def menuInput():
-    '''takes user
 def loadUsers(fileName): 
     '''read in file of stored users' preferences from the file. returns dictionary
     of user's names and their preferences. Ryan completed this.'''
@@ -41,15 +39,15 @@ def getPrefs(userName, userDict):
     '''returns list of user's preferred artists. Replaces the preferences previously saved in the 
      database under the user. Ryan completed this.'''
      
-    preference = ''
+    preference = []
     while True:
             getpref = input('Enter an artist that you like (Enter to Finish): \n')
             if getpref == '':
-                return preference[:-1]
+                userDict[userName] = preference
+                return preference
             else:
-                preference = preference + getpref + ","
+                preference.append(getpref)
 
-    userDict[userName] = preference
 
 def findBestUser(currUser, prefs, userDict): 
     '''finds user whose preferences are the most similar to current user.
@@ -86,7 +84,6 @@ def drop(L1, L2):
     j = 0
     while i < len(L1) and j < len(L2):
         if L1[i] == L2[j]:
-            print("Skip", L1[i])
             i += 1
             j += 1
         elif L1[i] < L2[j]:
@@ -94,6 +91,9 @@ def drop(L1, L2):
         else:
             L.append(L2[j])
             j += 1
+    while j < len(L2):
+        L.append(L2[j])
+        j += 1
     return L
               
 
@@ -104,9 +104,9 @@ def getRecs(userName, prefs, userDict):
     
     bestUser = findBestUser(userName, prefs, userDict)
 
-    if bestUser is not None and userDict[bestUser]['private_mode']:
+    if bestUser == None or userDict[bestUser][-1] == '$':
         print("No recommendations available at this time.")
-        return 
+        return
 
     recommendations = drop(prefs, userDict[bestUser])
 
@@ -115,15 +115,14 @@ def getRecs(userName, prefs, userDict):
     recommendations.sort()
 
     if recommendations:
-        for artist in recommendations:
-            print(artist)
+        print(", ".join(recommendations))
     else:
         print("No recommendations available at this time.")
         
 
 def mostPop(userDict):
     '''returns the top 3 artists that are liked by the most users. Users in private mode are
-        excluded. Maddy completed this function.'''
+        excluded. Ryan completed this function.'''
     if userDict == {}:
         print("Sorry, no artists found.")
     
@@ -132,7 +131,8 @@ def mostPop(userDict):
         r = [key for key in userDict if '$' not in key]
 
         for key in r:
-            rL = userDict[key].split(',')
+            
+            rL = str(userDict[key]).split(',')
 
             for i in rL:
                 if i not in numL:
@@ -152,12 +152,11 @@ def howPop(userDict):
         print("Sorry, no artists found.")
     
     else:
-
         likesCount = {}
-        r = [key for key in userDict if '$' in key]
+        r = [key for key in userDict if '$' not in key]
         
-        if key in r:
-            artistL = userDict[key].split(',')
+        for key in r:
+            artistL = str(userDict[key]).split(',')
 
             for artist in artistL:
                 if artist not in likesCount:
@@ -172,7 +171,7 @@ def howPop(userDict):
         
 
 def mostLikes(userDict):
-    '''returns the full names of the users who like the most artists. Maddy completed this function.'''
+    '''returns the full names of the users who like the most artists. Karlo completed this function.'''
     if userDict == {}:
         print("Sorry, no user found.")
     else:
@@ -180,7 +179,7 @@ def mostLikes(userDict):
         r = [key for key in userDict if '$' not in key]
         
         for key in r:
-            artistL = userDict[key].split(',')
+            artistL = str(userDict[key]).split(',')
             if len(artistL) > out[0]:
                 out = len(artistL), key
         print(out[1])
@@ -194,7 +193,10 @@ def main():
 
     if userName not in userDict:
         prefs = getPrefs(userName, userDict)
+        userDict[userName] = prefs
         saveUserPrefs(userName, prefs, userDict, PREF_FILE)
+    else:
+        prefs = userDict[userName]
 
     while True:
         print("Enter a letter to choose an option:")
@@ -211,7 +213,7 @@ def main():
             prefs = getPrefs(userName, userDict)
             saveUserPrefs(userName, prefs, userDict, PREF_FILE)
         elif mchoice == 'r':
-            pass
+            recs = getRecs(userName, prefs, userDict)
         elif mchoice == 'p':
             mostPop(userDict)
         elif mchoice == 'h':
@@ -224,4 +226,5 @@ def main():
         else:
             print("Invalid choice. Please try again.")
             
-    if __name__ == '__main__' : main()
+    if __name__ == '__main__' :
+        main()
